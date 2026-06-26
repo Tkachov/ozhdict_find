@@ -126,7 +126,7 @@ h1 {
   cursor: pointer;
 }
 .pack-group.expandable .pack-header::before {
-  content: "+";
+  content: "▶";
   font-size: 0.6rem;
   color: #aab4c4;
   flex-shrink: 0;
@@ -135,7 +135,7 @@ h1 {
   transition: transform 0.15s;
 }
 .pack-group.expandable.open .pack-header::before {
-  transform: rotate(45deg);
+  transform: rotate(90deg);
 }
 .pack-group.expandable .pack-header:hover {
   background: #f6f8fc;
