@@ -12,17 +12,14 @@ body {
   margin: 0 auto;
 }
 h1 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #1a2540;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
-.subtitle {
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 18px;
-}
-/* ── Controls ───────────────────────────────────────── */
+
+/* Controls */
+
 .controls {
   display: flex;
   gap: 14px;
@@ -54,12 +51,14 @@ h1 {
   user-select: none;
   white-space: nowrap;
 }
-/* ── Alphabet buttons ────────────────────────────────── */
+
+/* Alphabet buttons */
+
 .alphabet {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .alpha-btn {
   padding: 5px 9px;
@@ -85,7 +84,9 @@ h1 {
   background: #f6f7f9;
   cursor: default;
 }
-/* ── Results ─────────────────────────────────────────── */
+
+/* Results */
+
 .stats {
   font-size: 0.85rem;
   color: #666;
@@ -93,12 +94,12 @@ h1 {
   min-height: 1.2em;
 }
 .letter-header {
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   line-height: 1.25;
   font-weight: 700;
   color: #1a2540;
   padding: 0 2px;
-  margin: 20px 0 8px;
+  margin: 28px 0 12px;
 }
 .letter-header:first-child {
   margin-top: 0;
@@ -122,6 +123,7 @@ h1 {
   gap: 8px;
   padding: 10px 14px;
   user-select: none;
+  border-radius: 10px;
 }
 .pack-group.expandable .pack-header {
   cursor: pointer;
@@ -167,9 +169,19 @@ h1 {
   font-size: 1.4rem;
   font-weight: 500;
   transition: background 0.12s;
+
+  border-radius: 10px;
+  font-family: none;
+  color: #1e86ff;
+  background: #f0f7ff;
+  min-width: 0px;
+  margin: 4px;
+  padding: 0 10px;
+  border-radius: 20px;
 }
 .pack-link:hover {
-  background: #1f67ba;
+  background: #1e86ff;
+  color: #FFF;
 }
 .pack-body {
   display: none;
