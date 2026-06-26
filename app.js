@@ -63,12 +63,16 @@ function pluralize(n, one, few, many) {
   return many;
 }
 
+function letterHeaderId(packIndex) {
+  return 'letter-' + packIndex;
+}
+
 function updateAlphabetButtons(letterToFirstPack) {
   for (const btn of alphabetEl.querySelectorAll('.alpha-btn')) {
     const pack = letterToFirstPack.get(btn.textContent);
     if (pack !== undefined) {
       btn.classList.remove('disabled');
-      btn.dataset.targetId = 'letter-' + pack;
+      btn.dataset.targetId = letterHeaderId(pack);
     } else {
       btn.classList.add('disabled');
       btn.dataset.targetId = '';
@@ -95,7 +99,7 @@ function buildPacksHtml(packsData, isSearch) {
     const group = getLetterGroupForPack(packIndex);
     if (group.display !== currentGroupDisplay) {
       currentGroupDisplay = group.display;
-      html += `<div class="letter-header" id="letter-${packIndex}">${escapeHtml(group.display)}</div>`;
+      html += `<div class="letter-header" id="${letterHeaderId(packIndex)}">${escapeHtml(group.display)}</div>`;
     }
     const openClass = isSearch ? ' open expandable' : '';
     html += `<div class="pack-group${openClass}" id="pack-${packIndex}">`;
