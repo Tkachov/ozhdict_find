@@ -90,9 +90,7 @@ resultsEl.addEventListener('click', (e) => {
 });
 
 // Build HTML for a list of packs, inserting letter-group headers as needed.
-// In search mode each pack is open with a word count badge and a word list.
-// In browse mode packs are collapsed with no body.
-function buildPacksHtml(packsData, isSearch) {
+function buildPacksHtml(packsData, isOpenByDefault) {
   let html = '';
   let currentGroupDisplay = null;
   for (const { packIndex, words } of packsData) {
@@ -101,16 +99,14 @@ function buildPacksHtml(packsData, isSearch) {
       currentGroupDisplay = group.display;
       html += `<div class="letter-header" id="${letterHeaderId(packIndex)}">${escapeHtml(group.display)}</div>`;
     }
-    const openClass = isSearch ? ' open expandable' : '';
+    const openClass = isOpenByDefault ? ' open expandable' : ' expandable';
     html += `<div class="pack-group${openClass}" id="pack-${packIndex}">`;
+    html += `<div class="pack-main">`;
     html += `<div class="pack-header">`;
     html += `<span class="pack-title">${escapeHtml(PACK_NAMES[packIndex])}</span>`;
-    if (isSearch) {
-      html += `<span class="pack-count">${words.length}</span>`;
-    }
-    html += `<a class="pack-link" href="${escapeHtml(packUrl(packIndex))}" target="_blank" rel="noopener">↗</a>`;
+    html += `<span class="pack-count">${words.length}</span>`;
     html += `</div>`;
-    if (isSearch) {
+    if (words.length > 0) {
       html += `<div class="pack-body"><ul>`;
       for (const word of words) {
         html += `<li>${escapeHtml(word)}</li>`;
@@ -118,25 +114,13 @@ function buildPacksHtml(packsData, isSearch) {
       html += `</ul></div>`;
     }
     html += `</div>`;
+    html += `<a class="pack-link" href="${escapeHtml(packUrl(packIndex))}" target="_blank" rel="noopener">+</a>`;
+    html += `</div>`;
   }
   return html;
 }
 
-function renderBrowse() {
-  const totalPacks = UPLOADED_UNTIL;
-  const totalWords = PACK_SIZE * UPLOADED_UNTIL;
-  statsEl.textContent =
-    `${totalPacks} ${pluralize(totalPacks, 'набор', 'набора', 'наборов')}, ` +
-    `${totalWords} ${pluralize(totalWords, 'слово', 'слова', 'слов')}`;
-  const packsData = [];
-  for (let i = 0; i < UPLOADED_UNTIL; i++) {
-    packsData.push({ packIndex: i, words: [] });
-  }
-  resultsEl.innerHTML = buildPacksHtml(packsData, false);
-  updateAlphabetButtons(new Map(Object.entries(LETTER_FIRST_PACK)));
-}
-
-function renderSearch(query, fromStart) {
+function renderSearch(query, fromStart, isOpenByDefault) {
   // Collect matching words grouped by pack index
   const matchesByPack = new Map();
   const limit = Math.min(WORDS.length, UPLOADED_UNTIL * PACK_SIZE);
@@ -144,7 +128,10 @@ function renderSearch(query, fromStart) {
     const word = WORDS[i];
     if (!word) continue;
     const normalized = normalizeStr(word);
-    const matches = fromStart ? normalized.startsWith(query) : normalized.includes(query);
+    let matches = true;
+    if (query.length > 0) {
+      matches = fromStart ? normalized.startsWith(query) : normalized.includes(query);
+    }
     if (matches) {
       const packIndex = Math.floor(i / PACK_SIZE);
       if (!matchesByPack.has(packIndex)) matchesByPack.set(packIndex, []);
@@ -174,18 +161,18 @@ function renderSearch(query, fromStart) {
   const totalPacks = packsData.length;
   const totalWords = packsData.reduce((s, d) => s + d.words.length, 0);
   statsEl.textContent =
-    `Найдено ${totalPacks} ${pluralize(totalPacks, 'набор', 'набора', 'наборов')}, ` +
+    `${totalPacks} ${pluralize(totalPacks, 'набор', 'набора', 'наборов')}, ` +
     `${totalWords} ${pluralize(totalWords, 'слово', 'слова', 'слов')}`;
-  resultsEl.innerHTML = buildPacksHtml(packsData, true);
+  resultsEl.innerHTML = buildPacksHtml(packsData, isOpenByDefault);
   updateAlphabetButtons(letterToFirstPack);
 }
 
 function update() {
   const query = normalizeStr(searchInput.value.trim());
   if (query.length === 0) {
-    renderBrowse();
+    renderSearch('', startsWithCheckbox.checked, false);
   } else {
-    renderSearch(query, startsWithCheckbox.checked);
+    renderSearch(query, startsWithCheckbox.checked, true);
   }
 }
 
