@@ -3,22 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Словарь Ожегова — поиск по стикерпакам</title>
+  <title>Словарь Ожегова в стикерах</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Словарь Ожегова в стикерах</h1>
-  <p class="subtitle">Найдите стикерпак с нужным словом. 325 наборов, 120 стикеров в каждом.</p>
   <div class="controls">
     <input type="text" id="search" placeholder="Поиск..." autocomplete="off" autofocus>
-    <label>
-      <input type="checkbox" id="startswith">
-      только с начала слова
-    </label>
+    <label><input type="checkbox" id="startswith"> только с начала слова</label>
   </div>
   <div class="alphabet" id="alphabet"></div>
   <div id="stats" class="stats"></div>
   <div class="results" id="results"></div>
+  
   <script src="config.js"></script>
   <script src="words.js"></script>
   <script src="app.js"></script>
