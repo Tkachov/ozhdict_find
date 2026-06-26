@@ -128,11 +128,10 @@ function renderSearch(query, fromStart, isOpenByDefault) {
     const word = WORDS[i];
     if (!word) continue;
     const normalized = normalizeStr(word);
-    const matches = query.length === 0
-      ? true
-      : fromStart
-        ? normalized.startsWith(query)
-        : normalized.includes(query);
+    let matches = true;
+    if (query.length > 0) {
+      matches = fromStart ? normalized.startsWith(query) : normalized.includes(query);
+    }
     if (matches) {
       const packIndex = Math.floor(i / PACK_SIZE);
       if (!matchesByPack.has(packIndex)) matchesByPack.set(packIndex, []);
